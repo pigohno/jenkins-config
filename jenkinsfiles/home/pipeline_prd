@@ -16,16 +16,16 @@ pipeline {
         SLACK_NOTIFICATION_URL = "https://hooks.slack.com/services/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"
     }
     
-    stage('Start Notification') {
-        steps {
-            sh """curl -X POST \
-                -H 'content-type:application/json' \
-                -d '{\"text\":\"<!channel> *배포 알림*\",\"attachments\":[{\"color\":\"${SLACK_COLOR_GREEN}\",\"fields\":[{\"title\":\"Pipeline\",\"value\":\"${env.JOB_BASE_NAME}\",\"short\":\"true\"},{\"title\":\"Status\",\"value\":\"START\",\"short\":\"true\"},{\"title\":\"Last commit hash\",\"value\":\"${LAST_COMMIT_HASH}\"},{\"title\":\"Message\",\"value\":\"${LAST_COMMIT_MESSAGE}\"}]}]}' \
-                ${SLACK_NOTIFICATION_URL}"""
-        }
-    }
-     
     stages {
+    	stage('Start Notification') {
+	        steps {
+	            sh """curl -X POST \
+	                -H 'content-type:application/json' \
+	                -d '{\"text\":\"<!channel> *배포 알림*\",\"attachments\":[{\"color\":\"${SLACK_COLOR_GREEN}\",\"fields\":[{\"title\":\"Pipeline\",\"value\":\"${env.JOB_BASE_NAME}\",\"short\":\"true\"},{\"title\":\"Status\",\"value\":\"START\",\"short\":\"true\"},{\"title\":\"Last commit hash\",\"value\":\"${LAST_COMMIT_HASH}\"},{\"title\":\"Message\",\"value\":\"${LAST_COMMIT_MESSAGE}\"}]}]}' \
+	                ${SLACK_NOTIFICATION_URL}"""
+	        }
+	    }
+	    
         stage('Checkout source') {
             steps {
                 checkout scm: [$class: 'GitSCM', userRemoteConfigs: [[url: GIT_REPOSITORY_URL, credentialsId: GIT_CREDENTIALS_ID ]], branches: [[name: GIT_BRANCH]]], poll: false
@@ -66,15 +66,15 @@ pipeline {
 	                }
 	            }
 	        }
-        }
-         
-        stage('End Notification') {
-            steps {
-                sh """curl -X POST \
-                    -H 'content-type:application/json' \
-                    -d '{\"text\":\"<!channel> *배포 알림*\",\"attachments\":[{\"color\":\"${SLACK_COLOR_GREEN}\",\"fields\":[{\"title\":\"Pipeline\",\"value\":\"${env.JOB_BASE_NAME}\",\"short\":\"true\"},{\"title\":\"Status\",\"value\":\"SUCCESS\",\"short\":\"true\"},{\"title\":\"Last commit hash\",\"value\":\"${LAST_COMMIT_HASH}\"},{\"title\":\"Message\",\"value\":\"${LAST_COMMIT_MESSAGE}\"}]}]}' \
-                    ${SLACK_NOTIFICATION_URL}"""
-            }
+	        
+	        stage('End Notification') {
+	            steps {
+	                sh """curl -X POST \
+	                    -H 'content-type:application/json' \
+	                    -d '{\"text\":\"<!channel> *배포 알림*\",\"attachments\":[{\"color\":\"${SLACK_COLOR_GREEN}\",\"fields\":[{\"title\":\"Pipeline\",\"value\":\"${env.JOB_BASE_NAME}\",\"short\":\"true\"},{\"title\":\"Status\",\"value\":\"SUCCESS\",\"short\":\"true\"},{\"title\":\"Last commit hash\",\"value\":\"${LAST_COMMIT_HASH}\"},{\"title\":\"Message\",\"value\":\"${LAST_COMMIT_MESSAGE}\"}]}]}' \
+	                    ${SLACK_NOTIFICATION_URL}"""
+	            }
+	        }
         }
     }
 }
