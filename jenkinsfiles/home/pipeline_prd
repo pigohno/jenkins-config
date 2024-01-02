@@ -1,0 +1,80 @@
+pipeline {
+    environment {
+    	MAVEN_HOME = "/Users/mac/Desktop/maven"
+    	JENKINS_HOME = "/Users/mac/Desktop/jenkins"
+        
+        APP_VERSION = "0.0.1-SNAPSHOT"
+        DEPLOY_ENV = "prd"
+ 
+        GIT_REPOSITORY_URL = "$GIT_URL"
+        GIT_CREDENTIALS_ID = "GIT_CREDENTIALS_CODECOMMIT_APP"
+        GIT_BRANCH = "*/$GIT_BRANCH"
+ 
+        LAST_COMMIT_HASH = ""
+        LAST_COMMIT_MESSAGE = ""
+        DEPLOY_ENV_GIT_COMMIT_TAG = ""
+        SLACK_NOTIFICATION_URL = "https://hooks.slack.com/services/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"
+    }
+    
+    stage('Start Notification') {
+        steps {
+            sh """curl -X POST \
+                -H 'content-type:application/json' \
+                -d '{\"text\":\"<!channel> *배포 알림*\",\"attachments\":[{\"color\":\"${SLACK_COLOR_GREEN}\",\"fields\":[{\"title\":\"Pipeline\",\"value\":\"${env.JOB_BASE_NAME}\",\"short\":\"true\"},{\"title\":\"Status\",\"value\":\"START\",\"short\":\"true\"},{\"title\":\"Last commit hash\",\"value\":\"${LAST_COMMIT_HASH}\"},{\"title\":\"Message\",\"value\":\"${LAST_COMMIT_MESSAGE}\"}]}]}' \
+                ${SLACK_NOTIFICATION_URL}"""
+        }
+    }
+     
+    stages {
+        stage('Checkout source') {
+            steps {
+                checkout scm: [$class: 'GitSCM', userRemoteConfigs: [[url: GIT_REPOSITORY_URL, credentialsId: GIT_CREDENTIALS_ID ]], branches: [[name: GIT_BRANCH]]], poll: false
+                 
+                // Get build's metadata
+                script {
+                    LAST_COMMIT_HASH = sh(returnStdout: true, script: 'git log -1 --pretty=format:"%h"')
+                    LAST_COMMIT_MESSAGE = sh(returnStdout: true, script: 'git log -1 --pretty=format:"%s"')
+                    DEPLOY_ENV_GIT_COMMIT_TAG = "${LAST_COMMIT_HASH} - ${LAST_COMMIT_MESSAGE}"
+                    DEPLOY_ENV_BUILDTIME = new Date().format("yyyy-MM-dd HH:mm")
+                    currentBuild.description = DEPLOY_ENV_GIT_COMMIT_TAG
+                }
+            }
+            
+            stage('Build') {
+	            steps {
+	                script {
+	                    // Maven을 사용하여 빌드
+	                    sh "${MAVEN_HOME}/bin/mvn clean package"
+	                }
+	            }
+	        }
+	        
+	        stage('Copy JAR to Workspace') {
+	            steps {
+	                script {
+	                    // JAR 파일을 Jenkins workspace로 복사
+	                    sh 'cp target/*.jar $JENKINS_HOME/workspace/'
+	                }
+	            }
+	        }
+	
+	        stage('Run Spring Boot App') {
+	            steps {
+	                script {
+	                    // JAR 파일 실행
+	                    sh 'java -jar $JENKINS_HOME/workspace/*.jar'
+	                }
+	            }
+	        }
+        }
+         
+        stage('End Notification') {
+            steps {
+                sh """curl -X POST \
+                    -H 'content-type:application/json' \
+                    -d '{\"text\":\"<!channel> *배포 알림*\",\"attachments\":[{\"color\":\"${SLACK_COLOR_GREEN}\",\"fields\":[{\"title\":\"Pipeline\",\"value\":\"${env.JOB_BASE_NAME}\",\"short\":\"true\"},{\"title\":\"Status\",\"value\":\"SUCCESS\",\"short\":\"true\"},{\"title\":\"Last commit hash\",\"value\":\"${LAST_COMMIT_HASH}\"},{\"title\":\"Message\",\"value\":\"${LAST_COMMIT_MESSAGE}\"}]}]}' \
+                    ${SLACK_NOTIFICATION_URL}"""
+            }
+        }
+    }
+}
