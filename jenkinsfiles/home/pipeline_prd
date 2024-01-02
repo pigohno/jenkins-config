@@ -9,7 +9,7 @@ pipeline {
         DEPLOY_ENV = "prd"
  
         GIT_REPOSITORY_URL = "$GIT_URL"
-        GIT_CREDENTIALS_ID = "GIT_CREDENTIALS_CODECOMMIT_APP"
+        GIT_CREDENTIALS_ID = "0d9261a5-29b0-4b4d-8103-560d741c4602"
         GIT_BRANCH = "*/$GIT_BRANCH"
  
         LAST_COMMIT_HASH = ""
@@ -31,15 +31,6 @@ pipeline {
         stage('Checkout source') {
             steps {
                 checkout scm: [$class: 'GitSCM', userRemoteConfigs: [[url: GIT_REPOSITORY_URL, credentialsId: GIT_CREDENTIALS_ID ]], branches: [[name: GIT_BRANCH]]], poll: false
-                 
-                // Get build's metadata
-                script {
-                    LAST_COMMIT_HASH = sh(returnStdout: true, script: 'git log -1 --pretty=format:"%h"')
-                    LAST_COMMIT_MESSAGE = sh(returnStdout: true, script: 'git log -1 --pretty=format:"%s"')
-                    DEPLOY_ENV_GIT_COMMIT_TAG = "${LAST_COMMIT_HASH} - ${LAST_COMMIT_MESSAGE}"
-                    DEPLOY_ENV_BUILDTIME = new Date().format("yyyy-MM-dd HH:mm")
-                    currentBuild.description = DEPLOY_ENV_GIT_COMMIT_TAG
-                }
             }
         }
         
