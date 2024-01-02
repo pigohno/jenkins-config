@@ -15,7 +15,7 @@ pipeline {
         LAST_COMMIT_HASH = ""
         LAST_COMMIT_MESSAGE = "test"
         DEPLOY_ENV_GIT_COMMIT_TAG = ""
-        SLACK_NOTIFICATION_URL = "https://hooks.slack.com/services/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"
+        SLACK_NOTIFICATION_URL = "https://hooks.slack.com/services/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"
     }
     
     stages {
@@ -26,7 +26,7 @@ pipeline {
 	                ${SLACK_NOTIFICATION_URL}'
 	        }
 	    }
-	    
+	    /*
         stage('Checkout source') {
             steps {
                 checkout scm: [$class: 'GitSCM', userRemoteConfigs: [[url: GIT_REPOSITORY_URL, credentialsId: GIT_CREDENTIALS_ID ]], branches: [[name: GIT_BRANCH]]], poll: false
@@ -59,7 +59,7 @@ pipeline {
                 }
             }
         }
-        
+        */
         stage('End Notification') {
             steps {
                 sh """curl -X POST \
