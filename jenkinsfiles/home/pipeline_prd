@@ -1,4 +1,6 @@
 pipeline {
+	agent any
+	
     environment {
     	MAVEN_HOME = "/Users/mac/Desktop/maven"
     	JENKINS_HOME = "/Users/mac/Desktop/jenkins"
