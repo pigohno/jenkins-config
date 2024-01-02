@@ -22,7 +22,7 @@ pipeline {
     	stage('Start Notification') {
 	        steps {
 	            sh 'curl -X POST --data-urlencode \
-	                "payload={\"channel\": \"#monitoring\", \"icon_emoji\": \":ghost:\"}" \
+	                "payload={\"channel\": \"mpdm-icoon22--jychoi.tworld--eunnyun--pigohno--choi_eunmi--genie0904--wisemage--duacjf001--sunnydemon-1\", \"icon_emoji\": \":ghost:\"}" \
 	                ${SLACK_NOTIFICATION_URL}'
 	        }
 	    }
