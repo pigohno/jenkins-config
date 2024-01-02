@@ -28,39 +28,6 @@ pipeline {
 	        }
 	    }
 	    
-        stage('Checkout source') {
-            steps {
-                checkout scm: [$class: 'GitSCM', userRemoteConfigs: [[url: GIT_REPOSITORY_URL, credentialsId: GIT_CREDENTIALS_ID ]], branches: [[name: GIT_BRANCH]]], poll: false
-            }
-        }
-        
-        stage('Build') {
-            steps {
-                script {
-                    // Maven을 사용하여 빌드
-                    sh "${MAVEN_HOME}/bin/mvn clean package"
-                }
-            }
-        }
-        
-        stage('Copy JAR to Workspace') {
-            steps {
-                script {
-                    // JAR 파일을 Jenkins workspace로 복사
-                    sh 'cp target/*.jar $JENKINS_HOME/workspace/'
-                }
-            }
-        }
-
-        stage('Run Spring Boot App') {
-            steps {
-                script {
-                    // JAR 파일 실행
-                    sh 'java -jar $JENKINS_HOME/workspace/*.jar'
-                }
-            }
-        }
-        
         stage('End Notification') {
             steps {
                 sh """curl -X POST \
