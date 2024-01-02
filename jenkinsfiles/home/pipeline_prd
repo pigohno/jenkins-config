@@ -21,9 +21,9 @@ pipeline {
     stages {
     	stage('Start Notification') {
 	        steps {
-	            sh "curl -X POST --data-urlencode \
+	            sh 'curl -X POST --data-urlencode \
 	                "payload={\"icon_emoji\": \":ghost:\"}" \
-	                ${SLACK_NOTIFICATION_URL}
+	                ${SLACK_NOTIFICATION_URL}'
 	        }
 	    }
 	    
