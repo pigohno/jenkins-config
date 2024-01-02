@@ -22,7 +22,7 @@ pipeline {
     	stage('Start Notification') {
 	        steps {
 	            sh 'curl -X POST --data-urlencode \
-	                "payload={\"channel\": \"mpdm-icoon22--jychoi.tworld--eunnyun--pigohno--choi_eunmi--genie0904--wisemage--duacjf001--sunnydemon-1\", \"icon_emoji\": \":ghost:\"}" \
+	                "payload={\"channel\": \"#monitoring\", \"icon_emoji\": \":ghost:\"}" \
 	                ${SLACK_NOTIFICATION_URL}'
 	        }
 	    }
@@ -59,7 +59,6 @@ pipeline {
                 }
             }
         }
-        */
         stage('End Notification') {
             steps {
                 sh """curl -X POST \
@@ -68,5 +67,7 @@ pipeline {
                     ${SLACK_NOTIFICATION_URL}"""
             }
         }
+        */
+        
     }
 }
