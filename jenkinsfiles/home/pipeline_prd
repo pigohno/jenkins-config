@@ -15,7 +15,7 @@ pipeline {
         LAST_COMMIT_HASH = ""
         LAST_COMMIT_MESSAGE = "test"
         DEPLOY_ENV_GIT_COMMIT_TAG = ""
-        SLACK_NOTIFICATION_URL = "https://hooks.slack.com/services/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"
+        SLACK_NOTIFICATION_URL = "https://hooks.slack.com/services/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"
     }
     
     stages {
