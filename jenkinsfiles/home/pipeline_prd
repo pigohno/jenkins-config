@@ -39,42 +39,42 @@ pipeline {
                     currentBuild.description = DEPLOY_ENV_GIT_COMMIT_TAG
                 }
             }
-            
-            stage('Build') {
-	            steps {
-	                script {
-	                    // Maven을 사용하여 빌드
-	                    sh "${MAVEN_HOME}/bin/mvn clean package"
-	                }
-	            }
-	        }
-	        
-	        stage('Copy JAR to Workspace') {
-	            steps {
-	                script {
-	                    // JAR 파일을 Jenkins workspace로 복사
-	                    sh 'cp target/*.jar $JENKINS_HOME/workspace/'
-	                }
-	            }
-	        }
-	
-	        stage('Run Spring Boot App') {
-	            steps {
-	                script {
-	                    // JAR 파일 실행
-	                    sh 'java -jar $JENKINS_HOME/workspace/*.jar'
-	                }
-	            }
-	        }
-	        
-	        stage('End Notification') {
-	            steps {
-	                sh """curl -X POST \
-	                    -H 'content-type:application/json' \
-	                    -d '{\"text\":\"<!channel> *배포 알림*\",\"attachments\":[{\"color\":\"${SLACK_COLOR_GREEN}\",\"fields\":[{\"title\":\"Pipeline\",\"value\":\"${env.JOB_BASE_NAME}\",\"short\":\"true\"},{\"title\":\"Status\",\"value\":\"SUCCESS\",\"short\":\"true\"},{\"title\":\"Last commit hash\",\"value\":\"${LAST_COMMIT_HASH}\"},{\"title\":\"Message\",\"value\":\"${LAST_COMMIT_MESSAGE}\"}]}]}' \
-	                    ${SLACK_NOTIFICATION_URL}"""
-	            }
-	        }
+        }
+        
+        stage('Build') {
+            steps {
+                script {
+                    // Maven을 사용하여 빌드
+                    sh "${MAVEN_HOME}/bin/mvn clean package"
+                }
+            }
+        }
+        
+        stage('Copy JAR to Workspace') {
+            steps {
+                script {
+                    // JAR 파일을 Jenkins workspace로 복사
+                    sh 'cp target/*.jar $JENKINS_HOME/workspace/'
+                }
+            }
+        }
+
+        stage('Run Spring Boot App') {
+            steps {
+                script {
+                    // JAR 파일 실행
+                    sh 'java -jar $JENKINS_HOME/workspace/*.jar'
+                }
+            }
+        }
+        
+        stage('End Notification') {
+            steps {
+                sh """curl -X POST \
+                    -H 'content-type:application/json' \
+                    -d '{\"text\":\"<!channel> *배포 알림*\",\"attachments\":[{\"color\":\"${SLACK_COLOR_GREEN}\",\"fields\":[{\"title\":\"Pipeline\",\"value\":\"${env.JOB_BASE_NAME}\",\"short\":\"true\"},{\"title\":\"Status\",\"value\":\"SUCCESS\",\"short\":\"true\"},{\"title\":\"Last commit hash\",\"value\":\"${LAST_COMMIT_HASH}\"},{\"title\":\"Message\",\"value\":\"${LAST_COMMIT_MESSAGE}\"}]}]}' \
+                    ${SLACK_NOTIFICATION_URL}"""
+            }
         }
     }
 }
