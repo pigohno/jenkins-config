@@ -30,6 +30,7 @@ pipeline {
         stage('Checkout source') {
             steps {
                 checkout scm: [$class: 'GitSCM', userRemoteConfigs: [[url: GIT_REPOSITORY_URL, credentialsId: GIT_CREDENTIALS_ID ]], branches: [[name: GIT_BRANCH]]], poll: false
+                // gitCmd.checkout credentialsId: GIT_CREDENTIAL, url: GIT_URL, branch: GIT_BRANCH
             }
         }
         
