@@ -18,7 +18,7 @@ pipeline {
     stages {
         stage('Checkout source') {
             steps {
-            	sh 'echo $GIT_URL'
+            	sh 'echo $GIT_WEB_VIEW_URL'
             	sh 'echo $GIT_BRANCH'
             	sh 'echo $MAVEN_HOME'
             	sh 'echo $JENKINS_HOME'
