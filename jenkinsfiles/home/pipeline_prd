@@ -20,6 +20,11 @@ pipeline {
             steps {
             	sh 'echo $GIT_URL'
             	sh 'echo $GIT_BRANCH'
+            	sh 'echo $MAVEN_HOME'
+            	sh 'echo $JENKINS_HOME'
+            	sh 'echo $APP_VERSION'
+            	sh 'echo $DEPLOY_ENV'
+            	
                 checkout scm: [$class: 'GitSCM', userRemoteConfigs: [[url: GIT_URL, credentialsId: GIT_CREDENTIALS_ID ]], branches: [[name: GIT_BRANCH]]], poll: false
                 // gitCmd.checkout credentialsId: GIT_CREDENTIAL, url: GIT_URL, branch: GIT_BRANCH
             }
@@ -29,7 +34,7 @@ pipeline {
             steps {
                 script {
                     // Maven을 사용하여 빌드
-                    sh "${MAVEN_HOME}/bin/mvn clean package"
+                    sh "$MAVEN_HOME/bin/mvn clean package"
                 }
             }
         }
@@ -47,7 +52,7 @@ pipeline {
             steps {
                 script {
                     // JAR 파일 실행
-                    sh 'java -jar $JENKINS_HOME/workspace/*.jar'
+                    sh 'java -jar $JENKINS_HOME/workspace/$PROJECT_NAME.jar'
                 }
             }
         }
