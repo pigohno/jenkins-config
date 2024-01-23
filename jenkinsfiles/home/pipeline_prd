@@ -25,7 +25,7 @@ pipeline {
             	sh 'echo $APP_VERSION'
             	sh 'echo $DEPLOY_ENV'
             	
-                checkout scm: [$class: 'GitSCM', userRemoteConfigs: [[url: GIT_URL, credentialsId: GIT_CREDENTIALS_ID ]], branches: [[name: GIT_BRANCH]]], poll: false
+                checkout scm: [$class: 'GitSCM', userRemoteConfigs: [[url: GIT_WEB_VIEW_URL, credentialsId: GIT_CREDENTIALS_ID ]], branches: [[name: GIT_BRANCH]]], poll: false
                 // gitCmd.checkout credentialsId: GIT_CREDENTIAL, url: GIT_URL, branch: GIT_BRANCH
             }
         }
