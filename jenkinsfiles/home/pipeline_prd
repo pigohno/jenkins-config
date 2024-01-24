@@ -38,7 +38,8 @@ pipeline {
             steps {
                 script {
                     // JAR 파일을 Jenkins workspace로 복사
-                    sh 'cp target/*.jar $JENKINS_HOME/workspace/'
+                    sh 'cp target/*.jar $JENKINS_HOME/workspace/$PROJECT_NAME/'
+                    sh 'chmod 775 -R $JENKINS_HOME/workspace/$PROJECT_NAME/'
                 }
             }
         }
@@ -47,7 +48,7 @@ pipeline {
             steps {
                 script {
                     // JAR 파일 실행
-                    sh 'java -jar $JENKINS_HOME/workspace/$PROJECT_NAME.jar'
+                    sh 'java -jar $JENKINS_HOME/workspace/$PROJECT_NAME/$PROJECT_NAME-$VERSION.jar'
                 }
             }
         }
