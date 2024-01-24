@@ -48,6 +48,21 @@ pipeline {
         stage('Run') {
             steps {
                 script {
+                	sh 'echo "PID Check..."'
+
+					sh "CURRENT_PID=$(ps -ef | grep java | grep jenkins_test_spring* | awk '{print $2}')"
+					
+					sh 'echo "Running PID: {$CURRENT_PID}"'
+					
+					if "$CURRENT_PID" [ -z CURRENT_PID ] ; then
+					    echo "Project is not running"
+					​else
+					    kill -9 $CURRENT_PID
+					   sleep 10
+					fi
+					
+					sh 'echo "Deploy Project...."'
+					
                     // JAR 파일 실행
                     sh 'java -jar $JENKINS_HOME/workspace/$PROJECT_NAME/$PROJECT_NAME-$VERSION.jar'
                 }
