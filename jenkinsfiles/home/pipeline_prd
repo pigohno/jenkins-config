@@ -50,7 +50,7 @@ pipeline {
                 script {
                 	sh 'echo "PID Check..."'
 
-					sh "CURRENT_PID=$(ps -ef | grep java | grep jenkins_test_spring* | awk '{print $2}')"
+					CURRENT_PID=$(ps -ef | grep java | grep jenkins_test_spring* | awk '{print $2}')
 					
 					sh 'echo "Running PID: {$CURRENT_PID}"'
 					
