@@ -21,9 +21,8 @@ pipeline {
             steps {
                 checkout([$class: 'GitSCM',
                 userRemoteConfigs: [[url: GIT_WEB_VIEW_URL, credentialsId: GIT_CREDENTIALS_ID ]],
-                branches: [[name: GIT_BRANCH]],
-                poll: false
-              ])
+                branches: [[name: GIT_BRANCH]]
+              ]), poll: false
             }
         }
         
