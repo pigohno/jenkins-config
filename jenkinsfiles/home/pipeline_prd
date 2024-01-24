@@ -12,7 +12,7 @@ pipeline {
         //GIT_CREDENTIALS_ID = "0d9261a5-29b0-4b4d-8103-560d741c4602"
         //GIT_CREDENTIALS_ID = "62b64ede-db09-4251-bbf2-9896f5c28c48"
         //GIT_CREDENTIALS_ID = "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" // credentialsId
-        GIT_CREDENTIALS_ID = "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"
+        GIT_CREDENTIALS_ID = "github_jenkins"
         GIT_BRANCH = "*/$GIT_BRANCH"
     }
     
