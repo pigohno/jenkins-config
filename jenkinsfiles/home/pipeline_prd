@@ -13,7 +13,7 @@ pipeline {
         //GIT_CREDENTIALS_ID = "62b64ede-db09-4251-bbf2-9896f5c28c48"
         //GIT_CREDENTIALS_ID = "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" // credentialsId
         GIT_CREDENTIALS_ID = "pigohno"
-        GIT_BRANCH = "*/$GIT_BRANCH"
+        GIT_BRANCH = "$GIT_BRANCH"
     }
     
     stages {
