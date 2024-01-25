@@ -51,7 +51,8 @@ pipeline {
 					sh '$JENKINS_HOME/script/./pid_kill.sh $PROJECT_NAME $PROJECT_NAME'
 					
                     // JAR 파일 실행
-                    sh 'nohup java -jar $JENKINS_HOME/workspace/$PROJECT_NAME/$PROJECT_NAME-$VERSION.jar > output.log 2>&1 &'
+                    //sh 'nohup java -jar $JENKINS_HOME/workspace/$PROJECT_NAME/$PROJECT_NAME-$VERSION.jar &'
+                    sh '$JENKINS_HOME/script/./start_jar.sh $JENKINS_HOME/workspace/$PROJECT_NAME/$PROJECT_NAME-$VERSION.jar'
                 }
             }
         }
