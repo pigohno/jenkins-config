@@ -43,7 +43,7 @@ pipeline {
 					sh '$JENKINS_HOME/script/./pid_kill.sh $PROJECT_NAME $PROJECT_NAME'
                     // JAR 파일 실행
                     sh 'echo "서비스 시작"'
-                    sh 'nohup java -jar $JENKINS_HOME/workspace/$PROJECT_NAME/$PROJECT_NAME-$VERSION.jar &'
+                    sh 'java -jar $JENKINS_HOME/workspace/$PROJECT_NAME/$PROJECT_NAME-$VERSION.jar &'
                     sh 'ps -ef | grep java'
                     sh 'echo "서비스 종료"'
                     //sh 'nohup java -jar $JENKINS_HOME/workspace/$PROJECT_NAME/$PROJECT_NAME-$VERSION.jar > /dev/null 2>&1 &'
