@@ -32,7 +32,7 @@ pipeline {
                     // JAR 파일을 Jenkins workspace로 복사
                     sh 'mkdir -p $JENKINS_HOME/workspace/$PROJECT_NAME'
                     sh 'cp target/*.jar $JENKINS_HOME/workspace/$PROJECT_NAME/'
-                    sh 'chmod 775 $JENKINS_HOME/workspace/$PROJECT_NAME/*'
+                    sh 'chmod +x $JENKINS_HOME/workspace/$PROJECT_NAME/*'
                 }
             }
         }
