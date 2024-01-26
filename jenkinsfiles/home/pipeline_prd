@@ -45,6 +45,7 @@ pipeline {
                     sh 'echo "서비스 시작"'
                     sh 'nohup /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java -jar $JENKINS_HOME/workspace/$PROJECT_NAME/$PROJECT_NAME-$VERSION.jar > $JENKINS_HOME/workspace/$PROJECT_NAME/nohup.out >&1 &'
                     sh 'ps -ef | grep java'
+                    sh 'sheep 10'
                     sh 'echo "서비스 종료"'
                     //sh 'nohup java -jar $JENKINS_HOME/workspace/$PROJECT_NAME/$PROJECT_NAME-$VERSION.jar > /dev/null 2>&1 &'
                     //sh 'sh -c "nohup /usr/bin/java -jar $JENKINS_HOME/workspace/$PROJECT_NAME/$PROJECT_NAME-$VERSION.jar &"'
