@@ -61,7 +61,7 @@ pipeline {
     post {
     	success {
     		sh '''
-    			nohup $JENKINS_HOME/script/./start_jar.sh $JENKINS_HOME/workspace/$PROJECT_NAME/$PROJECT_NAME-$VERSION.jar &
+    			$JENKINS_HOME/script/./start_jar.sh $JENKINS_HOME/workspace/$PROJECT_NAME/$PROJECT_NAME-$VERSION.jar
     			sleep 2
     		'''
     	}
