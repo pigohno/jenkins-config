@@ -42,16 +42,25 @@ pipeline {
                 script {
 					sh '$JENKINS_HOME/script/./pid_kill.sh $PROJECT_NAME $PROJECT_NAME'
                     // JAR 파일 실행
-                    sh 'echo "서비스 시작"'
+                    //sh 'echo "서비스 시작"'
                     //sh 'nohup java -jar $JENKINS_HOME/workspace/$PROJECT_NAME/$PROJECT_NAME-$VERSION.jar > $JENKINS_HOME/workspace/$PROJECT_NAME/nohup.out >&1 & disown'
-                    sh '$JENKINS_HOME/script/./start_jar.sh $JENKINS_HOME/workspace/$PROJECT_NAME/$PROJECT_NAME-$VERSION.jar'
-                    sh 'ps -ef | grep java'
-                    sh 'sleep 10'
-                    sh 'echo "서비스 종료"'
+                    //sh '''
+                    //	$JENKINS_HOME/script/./start_jar.sh $JENKINS_HOME/workspace/$PROJECT_NAME/$PROJECT_NAME-$VERSION.jar
+                    //'''
+                    //sh 'ps -ef | grep java'
+                    //sh 'sleep 10'
+                    //sh 'echo "서비스 종료"'
                     //sh 'nohup java -jar $JENKINS_HOME/workspace/$PROJECT_NAME/$PROJECT_NAME-$VERSION.jar > /dev/null 2>&1 &'
                     //sh 'sh -c "nohup /usr/bin/java -jar $JENKINS_HOME/workspace/$PROJECT_NAME/$PROJECT_NAME-$VERSION.jar &"'
                     //sh 'nohup $JENKINS_HOME/script/./start_jar.sh $JENKINS_HOME/workspace/$PROJECT_NAME/$PROJECT_NAME-$VERSION.jar &'
                 }
+                post {
+	                // If Maven was able to run the tests, even if some of the test
+	                // failed, record the test results and archive the jar file.
+	                success {
+	                    archiveArtifacts '$JENKINS_HOME/workspace/$PROJECT_NAME/$PROJECT_NAME-$VERSION.jar'
+	                }
+	            }
             }
         }
     }
