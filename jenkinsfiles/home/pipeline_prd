@@ -41,7 +41,7 @@ pipeline {
             steps {
                 script {
 					sh '$JENKINS_HOME/script/./pid_kill.sh $PROJECT_NAME $PROJECT_NAME'
-					archiveArtifacts '/Users/mac/Desktop/jenkins/workspace/com.story.ai/com.story.ai-0.0.1-SNAPSHOT.jar'
+					//archiveArtifacts '/Users/mac/Desktop/jenkins/workspace/com.story.ai/com.story.ai-0.0.1-SNAPSHOT.jar'
                     // JAR 파일 실행
                     //sh 'echo "서비스 시작"'
                     //sh 'nohup java -jar $JENKINS_HOME/workspace/$PROJECT_NAME/$PROJECT_NAME-$VERSION.jar > $JENKINS_HOME/workspace/$PROJECT_NAME/nohup.out >&1 & disown'
@@ -56,6 +56,12 @@ pipeline {
                     //sh 'nohup $JENKINS_HOME/script/./start_jar.sh $JENKINS_HOME/workspace/$PROJECT_NAME/$PROJECT_NAME-$VERSION.jar &'
                 }
             }
+        }
+        
+        post {
+        	success {
+        		sh '$JENKINS_HOME/script/./start_jar.sh $JENKINS_HOME/workspace/$PROJECT_NAME/$PROJECT_NAME-$VERSION.jar'
+        	}
         }
     }
 }
